@@ -56,7 +56,7 @@ static const char *verbs[] = { "ask", "give", "run", "fly", "put", "eat", "drink
 /* Gets the lexeme */
 lexeme_t lexeme_type(const char *word)
 {
-    if (word == NULL || (strcmp(word, "") == 0)) {
+    if (!word || str_is_empty(word)) {
         return LEX_EMPTY;
     }
 
@@ -115,7 +115,7 @@ lexeme_t lexeme_type(const char *word)
 /* Parse syntax of previously analyzed sentence chunks */
 int parse_cmd(cmd_t *cmd)
 {
-    if (cmd_action == NULL) { /* no verb, no action, therefore nothing to do */
+    if (!cmd_action) { /* no verb, no action, therefore nothing to do */
         return 1;
     }
 
@@ -145,7 +145,7 @@ int parse_simple(char *sentence)
 
     cmd = cmd_init_empty();
 
-    while ((token = strsep(&sentence, DELIMITERS)) != NULL) {
+    while ((token = strsep(&sentence, DELIMITERS))) {
         token_type = lexeme_type(token);
         switch (token_type) {
             case LEX_VERB:
@@ -214,14 +214,15 @@ int parse_compound(char *sentence)
     int ret_val = 0;
     int it=0;
 
-    if (sentence == NULL || (strcmp(sentence, "") == 0)) {
+    if (!sentence || str_is_empty(sentence)) {
         return -1;
     }
 
     /* Iterate over all subsentences */
     str_normalize_l(&sentence);
     first = sentence;
-    while ((next = strstr(first, SEPARATOR)) != NULL) {
+//    while ((next = strstr(first, SEPARATOR)) != NULL) {
+    while ((next = strstr(first, SEPARATOR))) {
         prev = first;
         first = strndup(next + strlen(SEPARATOR),
                         strlen(next) - strlen(SEPARATOR));

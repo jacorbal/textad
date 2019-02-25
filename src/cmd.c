@@ -6,7 +6,6 @@
 
 /* System includes */
 #include <stdlib.h>
-#include <string.h>
 
 /* Local includes */
 #include <cmd.h>
@@ -17,7 +16,7 @@ cmd_t *cmd_init_empty(void)
 {
     cmd_t *cmd;
 
-    if ((cmd = malloc(sizeof(cmd_t))) == NULL) {
+    if (!(cmd = malloc(sizeof(cmd_t)))) {
         return NULL;
     }
 
@@ -37,11 +36,11 @@ cmd_t *cmd_init(char *action, char *mode, char *quantity, char *quality,
 {
     cmd_t *cmd;
 
-    if ((cmd = malloc(sizeof(cmd_t))) == NULL) {
+    if (!(cmd = malloc(sizeof(cmd_t)))) {
         return NULL;
     }
 
-    if (action == NULL) {
+    if (!action) {
         return NULL;
     }
 

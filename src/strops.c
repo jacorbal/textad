@@ -13,7 +13,7 @@
 #include <strops.h>
 
 
-/* Checks if a string is in an array of strings */
+/* Check if a string is in an array of strings */
 bool str_in_array(const char *s, const char **arr, size_t arr_len)
 {
     for (size_t i = 0; i < arr_len; ++i) {
@@ -26,7 +26,7 @@ bool str_in_array(const char *s, const char **arr, size_t arr_len)
 }
 
 
-/* Trims a string, removes leading and trailing white spaces */
+/* Trim a string, removes leading and trailing white spaces */
 void str_trim(char * s)
 {
     char * p = s;
@@ -40,9 +40,11 @@ void str_trim(char * s)
 
 
 /* Transform the string to lowercase */
-void str_transform(char *s, int (*f)(int))
+void str_transform_case(char *s, int (*f)(int))
 {
-    for ( ; *s; ++s) { *s = f(*s); }
+    for (; *s; ++s) {
+        *s = f(*s);
+    }
 }
 
 
@@ -51,13 +53,42 @@ void str_normalize(char **s, lettercase_t lettercase)
 {
     switch (lettercase) {
         case UPPERCASE:
-            str_toupper(*s);
+            /* str_toupper(*s); */
+            str_transform_case(*s, toupper);
             break;
 
         case LOWERCASE:
         default:
-            str_tolower(*s);
+            /* str_lower(*s); */
+            str_transform_case(*s, tolower);
+            break;
     }
     str_trim(*s);
+}
+
+
+/* Copy a string to another */
+size_t str_ncpy(char *dst, const char *src, size_t len)
+{
+    char *d = dst;
+    const char *s = src;
+    size_t n = len;
+
+    /* Copy as many bytes as will fit */
+    if (n != 0) {
+        while (--n != 0) {
+            if ((*d++ = *s++) == '\0') {
+                break;
+            }
+        }
+    }
+
+    /* Not enough room in dst, add NUL and traverse rest of src */
+    if (n == 0) {
+        if (len != 0) { *d = '\0';  } /* NUL-terminate dst */
+        while (*s++);
+    }
+
+    return s - src - 1;     /* Count does not include NUL */
 }
 

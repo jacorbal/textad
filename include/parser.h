@@ -9,12 +9,21 @@
  *
  *    * _Compound sentence_.  A sentence that has to be separated to
  *                            parse each unit individually.
+ *
+ * @code
+ * int main(void)
+ * {
+ *    char sentence[50] = "ask him about the 3 red birds and run viciously";
+ *    parse(sentence);
+ *    return 0;
+ * }
+ * @endcode
  */
 
 #ifndef PARSER_H
 #define PARSER_H
 
-#define DELIMITERS " .,;:!-'\"(){}[]<>" /**< Characters to ignore when parsing */
+#define DELIMITERS " .,;:!-'\"(){}[]<>" /**< Characters to ignore on parsing */
 #define SEPARATOR  "and"
 
 /* Local includes */

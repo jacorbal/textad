@@ -1,5 +1,5 @@
 /**
- * @file flag.c
+ * @file flag.h
  *
  * @brief Flag routines
  */
@@ -7,7 +7,8 @@
 #ifndef FLAG_H
 #define FLAG_H
 
-#include <stdbool.h>
+/* System includes */
+#include <stdbool.h>    /* bool, true, false */
 
 
 /**
@@ -17,7 +18,7 @@
  *        toggle the flag and print it
  */
 typedef struct {
-    bool v;                     /**< Actual value of the flag */
+    bool state;                 /**< Actual value of the flag */
     const char *yes;            /**< Text on positive case */
     const char *no;             /**< Text on negative case */
     int (*print)(const char *); /**< Pointer to print function */
@@ -28,15 +29,13 @@ typedef struct {
 /**
  * @brief Initializes the flag
  *
- * @param v      Flag effective value
+ * @param state  Flag effective value
  * @param yes    Text on affirmative case
  * @param no     Text on negative case
- * @param print  Print function
  *
  * @return Pointer to new flag, or @c NULL otherwise
  */
-flag_t *flag_init(bool v, const char *yes, const char *no,
-                  int (*print)(const char *));
+flag_t *flag_init(bool state, const char *yes, const char *no);
 
 /**
  * @brief Frees allocated memory
@@ -53,7 +52,7 @@ void flag_print(flag_t *flag);
 /**
  * @brief Macro that evaluates to the flag effective value
  */
-#define flag_v(f)  (f->v)
+#define flag_state(f)  (f->state)
 
 /**
  * @brief Macro that evaluates to the flag affirmative answer
@@ -71,12 +70,19 @@ void flag_print(flag_t *flag);
 #define flag_toggle(f)  (f->v = !(f->v))
 
 /**
- * @brief Macro that evaluates to @e flag_init in a quick mode
- *
- * This macro is equivalent to use @e flag_init setting the print
- * function pointer to @e puts.
+ * @brief Macro that evaluates to @flag_init without status strings
  */
-#define flag_init_q(f,y,n)  flag_init(f, y, n, puts)
+#define flag_init_q(f)  flag_init(f, NULL, NULL);
+
+/** @brief Macro that evaluates to @flag_init without status strings and
+ *         the status set to @c true
+ */
+#define flag_init_qt(f)  flag_init_qq(true)
+
+/** @brief Macro that evaluates to @flag_init without status strings and
+ *         the status set to @c false
+ */
+#define flag_init_qf(f)  flag_init_qq(false)
 
 
 #endif /* FLAG_H */
