@@ -1,0 +1,32 @@
+.
+├── Makefile
+├── include/
+│   ├── cmd.h
+│   ├── flag.h
+│   ├── inventory.h
+│   ├── io.h
+│   ├── item.h
+│   ├── lingo.h
+│   ├── parser.h
+│   ├── qltys.h
+│   ├── strops.h
+│   └── wset.h
+├── src/
+│   ├── cmd.c
+│   ├── flag.c
+│   ├── inventory.c
+│   ├── io.c
+│   ├── item.c
+│   ├── lingo.c
+│   ├── parser.c
+│   ├── qltys.c
+│   ├── strops.c
+│   ├── main.c
+│   └── wset.c
+├── bin/
+│   └── main*
+├── LICENSE
+├── README.md
+└── MANIFEST
+
+3 directories, 26 files

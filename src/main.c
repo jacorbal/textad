@@ -119,12 +119,13 @@ int main(void)
     item_toggle_flag(it1, heat);
 
     /* Associate flag with adjective */
+/*
     if (flag_state(heat)) {
         item_replace_adj(it1, "hot", "cold");
     } else {
         item_replace_adj(it1, "cold", "hot");
     }
-
+*/
 
     /* TODO:
      *

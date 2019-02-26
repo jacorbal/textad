@@ -1,3 +1,16 @@
+/*
+ * Copyright (c) 2019, J. A. Corbal
+ *
+ * THIS MATERIAL IS PROVIDED "AS IS", WITH ABSOLUTELY NO WARRANTY
+ * EXPRESSED OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
+ *
+ * Permission to use, copy, modify, distribute, and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear in
+ * supporting documentation.  No representations are made about the
+ * suitability of this software for any purpose.
+ */
 /**
  * @file wset.c
  *
@@ -58,7 +71,8 @@ bool wset_has_word(wset_t *wset, const char *word)
 /* Adds a new word to the set of words */
 bool wset_add(wset_t *wset, const char *word)
 {
-    if (!word || !wset || wset_has_word(wset, word)) {
+    if (!word || str_is_empty(word) || !wset ||
+            wset_has_word(wset, word)) {
         return false;
     }
 
@@ -80,7 +94,8 @@ bool wset_add(wset_t *wset, const char *word)
 /* Removes a word from the set of words */
 bool wset_rem(wset_t *wset, const char *word)
 {
-    if (!word || !wset || !wset_has_word(wset, word) || wset->len == 0) {
+    if (!word || str_is_empty(word) || !wset ||
+            !wset_has_word(wset, word) || wset->len == 0) {
         return false;
     }
 
