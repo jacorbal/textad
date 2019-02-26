@@ -31,6 +31,7 @@ wset_t *wset_init(void)
     return wset;
 }
 
+
 /* Frees allocated memory */
 void wset_destroy(wset_t *wset, bool destroy_words)
 {
@@ -57,13 +58,13 @@ bool wset_has_word(wset_t *wset, const char *word)
 /* Adds a new word to the set of words */
 bool wset_add(wset_t *wset, const char *word)
 {
-    if (wset_has_word(wset, word)) {
+    if (!word || !wset || wset_has_word(wset, word)) {
         return false;
     }
 
-    wset->words = realloc(wset->words, sizeof(char **) * (wset->len + 1));
+    wset->words = realloc(wset->words, sizeof(char *) * (wset->len + 1));
     wset->words[wset->len] = realloc(wset->words[wset->len],
-                                     sizeof(char *) * (strlen(word) + 1));
+                                     sizeof(char) * (strlen(word) + 1));
 
     if (!wset->words[wset->len]) {
         return false;
@@ -79,7 +80,7 @@ bool wset_add(wset_t *wset, const char *word)
 /* Removes a word from the set of words */
 bool wset_rem(wset_t *wset, const char *word)
 {
-    if (!wset_has_word(wset, word) || wset->len == 0) {
+    if (!word || !wset || !wset_has_word(wset, word) || wset->len == 0) {
         return false;
     }
 
@@ -88,7 +89,8 @@ bool wset_rem(wset_t *wset, const char *word)
             for (size_t j = i; j < wset->len; ++j) {
                 wset->words[j] = wset->words[j+1];
             }
-            // FIXME: Segfault when adding after removing! -- check 'realloc'
+            // FIXME/BUG: Segfault when adding after removing!
+            // TODO: check 'realloc'
 /*
             wset->words[i] = realloc(wset->words[i],
                     sizeof(char *) * (wset->bytes - strlen(word)));
@@ -110,8 +112,15 @@ bool wset_rem(wset_t *wset, const char *word)
 }
 
 
+/* Replaces an old string in the set with a new one */
+bool wset_replace(wset_t *wset, const char *old, const char *new)
+{
+    return wset_rem(wset, old) && wset_add(wset, new);
+}
+
+
 /* Applies a function to every string on the set */
-void wset_f(wset_t *wset, void (*f)(char *))
+void wset_map(wset_t *wset, void (*f)(char *))
 {
     for (size_t i = 0; i < wset->len; ++i) {
         f(wset->words[i]);

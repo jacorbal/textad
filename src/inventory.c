@@ -22,7 +22,7 @@ inv_t *inv_init(void)
         return NULL;
     }
 
-    if (!(inv->items = malloc(sizeof(item_t **)))) {
+    if (!(inv->items = malloc(sizeof(item_t *)))) {
         return NULL;
     }
 
@@ -39,7 +39,8 @@ void inv_destroy(inv_t *inv, bool destroy_items)
     if (inv->items) {
         if (destroy_items) {
             for (size_t i = 0; i < inv->len; ++i) {
-                free(inv->items[i]);
+//                free(inv->items[i]);
+                item_destroy(inv->items[i]);
             }
         }
         free(inv->items);
@@ -51,6 +52,10 @@ void inv_destroy(inv_t *inv, bool destroy_items)
 /* Checks if an item is contained in a specific inventory */
 bool inv_has_item(inv_t *inv, item_t *item)
 {
+    if (!item || !inv) {
+        return false;
+    }
+    
     for (size_t i = 0; i < inv->len; ++i) {
         if (inv->items[i]->id == item->id) {
             return true;
@@ -64,7 +69,7 @@ bool inv_has_item(inv_t *inv, item_t *item)
 /* Adds an item to the inventory */
 bool inv_add(inv_t *inv, item_t *item)
 {
-    if (inv_has_item(inv, item)) {
+    if (!item || !inv || inv_has_item(inv, item)) {
         return false;
     }
 
@@ -72,6 +77,7 @@ bool inv_add(inv_t *inv, item_t *item)
     if (!inv->items) {
         return false;
     }
+
     inv->items[inv->len] = item;
     inv->len++;
     inv->weight += item->weight;
@@ -83,14 +89,14 @@ bool inv_add(inv_t *inv, item_t *item)
 /* Removes an item from the inventory */
 bool inv_rem(inv_t *inv, item_t *item)
 {
-    if (!inv_has_item(inv, item) || inv->len == 0) {
+    if (!item || !inv || !inv_has_item(inv, item) || inv->len == 0) {
         return false;
     }
 
     for (size_t i = 0; i < inv->len; ++i) {
         if (inv->items[i]->id == item->id) {
             for (size_t j = i; j < inv->len; ++j) {
-                inv->items[j] = inv->items[j+1];
+                inv->items[j] = inv->items[j + 1];
             }
             inv->items = realloc(inv->items, sizeof(item_t *) * inv->len);
             if (!inv->items) {
@@ -117,8 +123,10 @@ float inv_eval_weight(inv_t *inv)
 {
     float total_weight = 0.0f;
 
-    for (size_t i = 0; i < inv->len; ++i) {
-        total_weight += inv->items[i]->weight;
+    if (inv) {
+        for (size_t i = 0; i < inv->len; ++i) {
+            total_weight += inv->items[i]->weight;
+        }
     }
 
     return total_weight;

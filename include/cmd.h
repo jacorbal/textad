@@ -1,11 +1,13 @@
 /**
  * @file cmd.h
  *
- * @brief Command routines
+ * @brief Command routines declaration
  */
 
 #ifndef CMD_H
 #define CMD_H
+
+#include <stddef.h> /* NULL */
 
 
 /**
@@ -60,13 +62,6 @@ typedef struct {
 /**
  * @brief Initializes a command allocating needed memory
  *
- * @return Pointer to the newly created command, or @c NULL otherwise
- */
-cmd_t *cmd_init_empty(void);
-
-/**
- * @brief Initializes a command allocating needed memory
- *
  * @param action   Verb
  * @param mode     Adverb
  * @param quality  Adjective
@@ -87,34 +82,41 @@ cmd_t *cmd_init(char *action, char *mode, char *quantity, char *quality,
 void cmd_destroy(cmd_t *cmd);
 
 /**
+ * @brief Macro that evaluates to the creation of an empty command
+ *
+ * @see cmd_init
+ */
+#define cmd_init_empty()  cmd_init(NULL, NULL, NULL, NULL, NULL, NULL)
+
+/**
  * @brief Macro that evaluates to the command @e action 'property'
  */
-#define cmd_action (cmd->action)
+#define cmd_action  (cmd->action)
 
 /**
  * @brief Macro that evaluates to the command @e mode 'property'
  */
-#define cmd_mode (cmd->mode)
+#define cmd_mode  (cmd->mode)
 
 /**
  * @brief Macro that evaluates to the command @e quantity 'property'
  */
-#define cmd_quantity (cmd->quantity)
+#define cmd_quantity  (cmd->quantity)
 
 /**
  * @brief Macro that evaluates to the command @e quality 'property'
  */
-#define cmd_quality (cmd->quality)
+#define cmd_quality  (cmd->quality)
 
 /**
  * @brief Macro that evaluates to the command @e dobj 'property'
  */
-#define cmd_dobj (cmd->dobj)
+#define cmd_dobj  (cmd->dobj)
 
 /**
  * @brief Macro that evaluates to the command @e iobj 'property'
  */
-#define cmd_iobj (cmd->iobj)
+#define cmd_iobj  (cmd->iobj)
 
 
 #endif /* CMD_H */

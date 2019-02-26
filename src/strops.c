@@ -83,12 +83,12 @@ size_t str_ncpy(char *dst, const char *src, size_t len)
         }
     }
 
-    /* Not enough room in dst, add NUL and traverse rest of src */
+    /* Not enough room in dst, add NULL and traverse rest of 'src' */
     if (n == 0) {
-        if (len != 0) { *d = '\0';  } /* NUL-terminate dst */
+        if (len != 0) { *d = '\0';  } /* null-terminate 'dst' */
         while (*s++);
     }
 
-    return s - src - 1;     /* Count does not include NUL */
+    return s - src - 1;     /* Count does not include 'NULL' */
 }
 

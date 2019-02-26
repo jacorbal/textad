@@ -138,7 +138,7 @@ float inv_eval_weight(inv_t *inv);
  *
  * @see inv_destroy
  */
-#define inv_destroy_all(i)  inv_destroy(i, true)
+#define inv_destroy_hard(i)  inv_destroy(i, true)
 
 /**
  * @brief Macro that evaluates to the inventory length (number of items

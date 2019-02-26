@@ -25,9 +25,9 @@ lingo_t *lingo_init(const char *kname, const char *uname,
         return NULL;
     }
 
-    lingo->kname = alloc_str_as(kname);
-    lingo->uname = alloc_str_as(uname);
-    lingo->desc = alloc_str_as(desc);
+    lingo->kname = str_alloc_as(kname);
+    lingo->uname = str_alloc_as(uname);
+    lingo->desc = str_alloc_as(desc);
 
     if (uname) { str_cpy(lingo->uname, uname); }
     if (kname) { str_cpy(lingo->kname, kname); }

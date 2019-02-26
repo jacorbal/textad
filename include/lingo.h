@@ -19,6 +19,12 @@
  * @typedef lingo_t
  *
  * @brief Language atoms for any object that can be in the game world
+ *
+ * This structure is intended to be used as a lingual construction for
+ * an game object to be refered to.  The adjectives @e adjs are only
+ * "static" adjectives, i.e., those that are constant and cannot change
+ * during the lifetime of the object, for they are not linked to any
+ * state value.
  */
 typedef struct {
     char *desc;         /**< Object description */
@@ -26,7 +32,7 @@ typedef struct {
     char *uname;        /**< Object unknown name */
 
     wset_t *nouns;      /**< List of nouns to refer this object */
-    wset_t *adjs;       /**< List of adjectives for this object */
+    wset_t *adjs;       /**< List of (static) adjectives for this object */
     wset_t *pronouns;   /**< List of pronouns related to this object */
 
     bool direct;        /**< Is this object usually indirect or direct */

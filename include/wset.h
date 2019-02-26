@@ -83,6 +83,20 @@ bool wset_add(wset_t *wset, const char *word);
 bool wset_rem(wset_t *wset, const char *word);
 
 /**
+ * @brief Replaces a string with another
+ *
+ * @param wset Where to make the changes
+ * @param old  Old string to replace
+ * @param new  Replacement string
+ *
+ * @return @c true if the replacement was successful, or @c false
+ *         otherwise
+ *
+ * @see wset_add, wset_rem
+ */
+bool wset_replace(wset_t *wset, const char *old, const char *new);
+
+/**
  * @brief Applies a function to every string on the set
  *
  * @param wset Word set to operate to
@@ -90,7 +104,7 @@ bool wset_rem(wset_t *wset, const char *word);
  *
  * @note The signature of the function must be `void f(char *)`
  */
-void wset_f(wset_t *wset, void (*f)(char *));
+void wset_map(wset_t *wset, void (*f)(char *));
 
 /**
  * @brief Macro that evaluates to a hard destroy of the object

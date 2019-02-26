@@ -125,14 +125,13 @@ size_t str_ncpy(char *dest, const char *src, size_t len);
 /**
  * @brief Macro that evaluates to the length of the string
  */
-//#define str_is_empty(s)  (streq(s, ""))
 #define str_is_empty(s)  (strlen(s) == 0)
 
 /**
  * @brief Macro that evaluates to the allocation of as much memory of
  *        another string, or it evaluates it to @c NULL
  */
-#define alloc_str_as(s)  (s) ? malloc(sizeof(char) * (strlen(s)+1)) : NULL
+#define str_alloc_as(s)  (s) ? malloc(sizeof(char) * (strlen(s)+1)) : NULL
 
 
 #endif /* STROPS_H */
