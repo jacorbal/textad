@@ -12,13 +12,13 @@
  * suitability of this software for any purpose.
  */
 /**
- * @file io.h
+ * @file printer.h
  *
- * @brief Input/Output routines declaration
+ * @brief Printing routines declaration
  */
 
-#ifndef IO_H
-#define IO_H
+#ifndef PRINTER_H
+#define PRINTER_H
 
 
 /**
@@ -80,5 +80,5 @@ int printer_flag(printer_t *printer, flag_t *flag);
 #define pf(printer, flag)  printer_flag(printer, flag)
 
 
-#endif /* IO_H */
+#endif /* PRINTER_H */
 

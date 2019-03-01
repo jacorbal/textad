@@ -16,11 +16,10 @@
  *
  * @brief Parses string by analyzing the syntactic value of every token
  *
- * Parses a string. It identifies every token with a gramatic value
- * after applying rules (language dependant) to exclude plurals,
- * conjugations, prefixation, etc.  The function in charge of this is
- * `str_in_array`, that compares the token with a database of words
- * classified by synxtax category.
+ * It identifies every token with a gramatic value after applying rules
+ * (language dependant) to exclude plurals, conjugations, prefixation,
+ * etc.  The function in charge of this is `str_in_array`, that compares
+ * the token with a database of words classified by synxtax category.
  *
  * There's a priority order in case a word could have different
  * syntactic values.  Instead of checking the sourroundings, the value
@@ -43,7 +42,7 @@
 
 /* Arrays of valid words separated by lexeme type.
  * TODO: later, taken from data files or databases */
-static const char *adverbs[] = { "gently", "softly", "viciously", "", };
+static const char *adverbs[] = { "gently", "softly", "viciously", };
 static const char *adjectives[] = { "red", "blue", "green", "yellow", "white", "black", "silver", };
 static const char *numbers[] = { "one", "two", "three", "four", "five", "1", "2", "3", };
 static const char *articles[] = { "a", "an", "the", };
@@ -132,6 +131,7 @@ int parse_cmd(cmd_t *cmd)
         return 1;
     }
 
+    /* Command processing */
 /**/
     printf("Action?....... %s\n", cmd_action);
     printf("Mode?......... %s\n", cmd_mode);
@@ -141,9 +141,6 @@ int parse_cmd(cmd_t *cmd)
     printf("I.Object?..... %s\n", cmd_iobj);
     puts("");
 /**/
-
-    /* Destroy the command when finish */
-    cmd_destroy(cmd);
 
     return 0;
 }
@@ -156,20 +153,23 @@ int parse_simple(char *sentence)
     char *token;
     cmd_t *cmd;
 
-    cmd = cmd_init_empty();
+    if (!(cmd = cmd_init_empty())) {
+        return 1;
+    }
 
     while ((token = strsep(&sentence, DELIMITERS))) {
         token_type = lexeme_type(token);
+            /* is_direction (n, nw...)?, is_special (look...)?,
+             * is_system (load...)?, is_answer (yes, no...)?,
+             * is_management (inventory...)? is_...*/
+
         switch (token_type) {
             case LEX_VERB:
-                /* is_direction (n, nw...)?, is_special (look...)?,
-                 * is_system (load...)?, is_answer (yes, no...)?,
-                 * is_management (inventory...)? is_...*/
-                cmd_action = token;
+                str_cpy(cmd_action, token);
                 break;
 
             case LEX_ADVERB:
-                cmd_mode = token;
+                str_cpy(cmd_mode, token);
                 break;
 
             case LEX_PREP:
@@ -179,19 +179,19 @@ int parse_simple(char *sentence)
                 break;
 
             case LEX_NUM:
-                cmd_quantity = token;
+                str_cpy(cmd_quantity, token);
                 break;
 
             case LEX_ADJ:
-                cmd_quality = token;
+                str_cpy(cmd_quality, token);
                 break;
 
             case LEX_NOUN:
-                cmd_dobj = token;
+                str_cpy(cmd_dobj, token);
                 break;
 
             case LEX_PRONOUN:
-                cmd_iobj = token;
+                str_cpy(cmd_iobj, token);
                 break;
 
             case LEX_CONJ:
@@ -203,12 +203,14 @@ int parse_simple(char *sentence)
 
             case LEX_END:   /* This point is reached on error */
             default:
-                puts("END");
-                return 1;
+                cmd_destroy(cmd);
+//                puts("END");
+                return 2;
         }
     }
 
     parse_cmd(cmd);
+    cmd_destroy(cmd);
 
     return 0;
 }
@@ -234,7 +236,6 @@ int parse_compound(char *sentence)
     /* Iterate over all subsentences */
     str_normalize_l(&sentence);
     first = sentence;
-//    while ((next = strstr(first, SEPARATOR)) != NULL) {
     while ((next = strstr(first, SEPARATOR))) {
         prev = first;
         first = strndup(next + strlen(SEPARATOR),

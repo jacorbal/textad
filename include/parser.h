@@ -91,7 +91,9 @@ int parse_cmd(cmd_t *cmd);
  *
  * @param sentence Sentence to parse
  *
- * @return Returns 0 if transverses the whole sentence, or otherwise
+ * @return Returns 0 if transverses the whole sentence,
+ *                 1 if can't allocate memory,
+ *                 or otherwise
  */
 int parse_simple(char *sentence);
 

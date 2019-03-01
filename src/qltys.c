@@ -49,14 +49,12 @@ qltys_t *qltys_init(void)
 /* Frees allocated memory */
 void qltys_destroy(qltys_t *qltys, bool destroy_flags)
 {
-    if (qltys->flags) {
-        if (destroy_flags) {
-            for (size_t i = 0; i < qltys->len; ++i) {
-                flag_destroy(qltys->flags[i]);
-            }
+    if (qltys->flags && destroy_flags) {
+        for (size_t i = 0; i < qltys->len; ++i) {
+            flag_destroy(qltys->flags[i]);
         }
-        free(qltys->flags);
     }
+    free(qltys->flags);
     free(qltys);
 }
 

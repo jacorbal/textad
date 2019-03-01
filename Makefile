@@ -71,6 +71,9 @@ clean:
 clean-all:
 	@make clean
 
+debug:
+	@make hard DEBUG=1
+
 run:
 	${TARGET} ${RUN_ARGS}
 
@@ -92,6 +95,7 @@ help:
 	@echo "  'make run'................ Run binary (if exists)"
 	@echo "  'make clean-obj'.............. Clean object files"
 	@echo "  'make clean'....... Clean binary and object files"
+	@echo "  'make debug'................Compile in DEBUG mode"
 	@echo "  'make hard'...................... Clean and build"
 	@echo ""
 	@echo " Binary will be placed in '${TARGET}'"

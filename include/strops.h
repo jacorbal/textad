@@ -50,7 +50,7 @@ bool str_in_array(const char *s, const char **arr, size_t arr_len);
  *
  * @param s String to trim
  */
-void str_trim(char * s);
+void str_trim(char *s);
 
 /**
  * @brief Convert the string to lowercase
@@ -78,12 +78,12 @@ void str_normalize(char **s, lettercase_t lettercase);
 /**
  * @brief String copying with safe boundaries
  *
- * @param dst Pointer to new string
- * @param src Null terminated string to copy from
+ * @param dst Pointer to destination string
+ * @param src Null-terminated string to copy from
  * @param len Length to be copied from @e src to @e dest
  *
- * @return Total length of the source string without counting the
- *         @c NULL terminator
+ * @return Pointer to the destination string, or @c NULL if failure on
+ *         memory allocation
  *
  * @note Copy up to @e n -1 bytes characters from @e src C-string, to
  *       @e dest, making sure the termination is @c NULL.
@@ -91,7 +91,22 @@ void str_normalize(char **s, lettercase_t lettercase);
  * @note This is a safer replacement for @e strncpy by guaranteeing a
  *       null-terminated result, inspired in @e strlcpy
  */
-size_t str_ncpy(char *dest, const char *src, size_t len);
+char *str_ncpy(char *dest, const char *src, size_t len);
+
+/**
+ * @brief Allocates as much memory for the destination string as the
+ *        length of the source string, and then copies the source string
+ *        into the destination
+ *
+ * @param dst Pointer to the destination string
+ * @param src Source string
+ *
+ * @return Pointer to the destination string, or @c NULL if failure on
+ *         memory allocation
+ *
+ * @see str_ncpy
+ */
+char *str_cpy_alloc(char **dst, const char *src);
 
 /**
  * @brief Macro that evaluates to @e str_transform using @e tolower

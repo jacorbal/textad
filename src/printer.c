@@ -12,7 +12,9 @@
  * suitability of this software for any purpose.
  */
 /**
- * @file io.c
+ * @file printer.c
+ *
+ * @brief Priting routines implementation
  */
 
 /* System includes */
@@ -20,7 +22,7 @@
 
 /* Local includes */
 #include <flag.h>
-#include <io.h>
+#include <printer.h>
 
 
 /*  */

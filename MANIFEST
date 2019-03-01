@@ -1,32 +1,35 @@
 .
 ├── Makefile
+├── LICENSE
+├── README.md
+├── AUTHORS
 ├── include/
-│   ├── cmd.h
 │   ├── flag.h
 │   ├── inventory.h
-│   ├── io.h
 │   ├── item.h
 │   ├── lingo.h
 │   ├── parser.h
 │   ├── qltys.h
+│   ├── wset.h
 │   ├── strops.h
-│   └── wset.h
-├── src/
-│   ├── cmd.c
-│   ├── flag.c
-│   ├── inventory.c
-│   ├── io.c
-│   ├── item.c
-│   ├── lingo.c
-│   ├── parser.c
-│   ├── qltys.c
-│   ├── strops.c
-│   ├── main.c
-│   └── wset.c
+│   ├── printer.h
+│   ├── input.h
+│   └── cmd.h
 ├── bin/
 │   └── main*
-├── LICENSE
-├── README.md
+├── src/
+│   ├── item.c
+│   ├── inventory.c
+│   ├── qltys.c
+│   ├── wset.c
+│   ├── flag.c
+│   ├── lingo.c
+│   ├── printer.c
+│   ├── input.c
+│   ├── strops.c
+│   ├── cmd.c
+│   ├── main.c
+│   └── parser.c
 └── MANIFEST
 
-3 directories, 26 files
+3 directories, 29 files

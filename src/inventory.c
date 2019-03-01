@@ -49,15 +49,12 @@ inv_t *inv_init(void)
 /* Frees allocated memory */
 void inv_destroy(inv_t *inv, bool destroy_items)
 {
-    if (inv->items) {
-        if (destroy_items) {
-            for (size_t i = 0; i < inv->len; ++i) {
-//                free(inv->items[i]);
-                item_destroy(inv->items[i]);
-            }
+    if (inv->items && destroy_items) {
+        for (size_t i = 0; i < inv->len; ++i) {
+            item_destroy(inv->items[i]);
         }
-        free(inv->items);
     }
+    free(inv->items);
     free(inv);
 }
 

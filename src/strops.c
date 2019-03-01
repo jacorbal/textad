@@ -40,9 +40,9 @@ bool str_in_array(const char *s, const char **arr, size_t arr_len)
 
 
 /* Trim a string, removes leading and trailing white spaces */
-void str_trim(char * s)
+void str_trim(char *s)
 {
-    char * p = s;
+    char *p = s;
     int l = strlen(p);
 
     while (isspace(p[l - 1])) { p[--l] = 0; }
@@ -81,27 +81,48 @@ void str_normalize(char **s, lettercase_t lettercase)
 
 
 /* Copy a string to another */
-size_t str_ncpy(char *dst, const char *src, size_t len)
+char *str_ncpy(char *dst, const char *src, size_t len)
 {
+    size_t size = strnlen(src, len);
+
+    if (size != len) {
+        memset(dst + size, '\0', len - size);
+    }
+
+    return memcpy(dst, src, size);
+}
+// Prototype for 'str_ncpy' (see above) to make it safer.{{{
+/*
     char *d = dst;
     const char *s = src;
     size_t n = len;
 
-    /* Copy as many bytes as will fit */
+    // Copy as many bytes as will fit
     if (n != 0) {
         while (--n != 0) {
-            if ((*d++ = *s++) == '\0') {
-                break;
-            }
+            if ((*d++ = *s++) == '\0') { break; }//FIXME: possibly mem. leak
         }
     }
 
-    /* Not enough room in dst, add NULL and traverse rest of 'src' */
+    // Not enough room in 'dst', add NULL and traverse rest of 'src'
     if (n == 0) {
-        if (len != 0) { *d = '\0';  } /* null-terminate 'dst' */
+        if (len != 0) { *d = '\0';  } // null-terminate 'dst'
         while (*s++);
     }
 
-    return s - src - 1;     /* Count does not include 'NULL' */
+//    return s - src - 1; // Retrurn bytes without including 'NULL'
+    return dst;           // Return pointer to 'dst'
+*/
+//}}}
+
+
+/* Copies one string after allocating memory for source pointer */
+char *str_cpy_alloc(char **dst, const char *src)
+{
+    if (src && (*dst = malloc(sizeof(char) * (strlen(src) + 1)))) {
+        return str_ncpy(*dst, src, strlen(src) + 1);
+    }
+
+    return NULL;
 }
 

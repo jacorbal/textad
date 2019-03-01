@@ -48,15 +48,12 @@ wset_t *wset_init(void)
 /* Frees allocated memory */
 void wset_destroy(wset_t *wset, bool destroy_words)
 {
-    if (wset->words) {
-        if (destroy_words) {
-            /* Free also the words when destroying the set */
-            for (size_t i = 0; i < wset->len; ++i) {
-                free(wset->words[i]);
-            }
+    if (wset->words && destroy_words) {
+        for (size_t i = 0; i < wset->len; ++i) {
+            free(wset->words[i]);
         }
-        free(wset->words);
     }
+    free(wset->words);
     free(wset);
 }
 

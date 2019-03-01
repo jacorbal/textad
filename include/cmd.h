@@ -84,8 +84,9 @@ typedef struct {
  *
  * @return Pointer to the newly created command, or @c NULL otherwise
  */
-cmd_t *cmd_init(char *action, char *mode, char *quantity, char *quality,
-                char *dobj, char *iobj);
+cmd_t *cmd_init(const char *action, const char *mode,
+                const char *quantity, const char *quality,
+                const char *dobj, const char *iobj);
 
 /**
  * @brief Frees allocated memory for a previously allocated command
