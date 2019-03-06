@@ -32,7 +32,9 @@
 #include <stdlib.h> /* free, malloc */
 #include <string.h> /* strlen, strndup, strsep, strstr */
 
-/**/#include <stdio.h>
+#ifdef DEBUG
+    #include <stdio.h>
+#endif
 
 /* Local includes */
 #include <cmd.h>
@@ -49,18 +51,18 @@ static const char *articles[] = { "a", "an", "the", };
 static const char *conjunctions[] = { "and", "then", };
 static const char *nouns[] = { "dog", "cat", "birds", "mouse", "potion", "key", "lock", };
 static const char *pronouns[] = { "him", "her", "his", "its", "self", };
-static const char *prepositions[] = { "about", "to", "for", "at", "in", "on", "of", "with", };
+static const char *prepositions[] = { "about", "to", "for", "at", "in", "on", "of", "with", "from", };
 static const char *verbs[] = { "ask", "give", "run", "fly", "put", "eat", "drink", "catch", "take", "drop", "open", };
 //static const char *answers[] = { "fine", "good", "bad", "yes", "no", "okay", };
 //static const char *directions[] = { "north", "east", "south", "west", "northeast", "nortwest", "southeast", "southwest", "up", "down", };
 //static const char *commands[] = { "inventory", "help", "restart", "load", "save", "quit", };
 /* Also add:
  *      *expelatives[]  = { "...", };
- *      *exclamations[] = {"hello", "bye", "damn", }
+ *      *exclamations[] = {"hello", "bye", "oh", "damn", }
  *
  * Not sure if include this, or use key combinations, or both...:
  *      *commands[] = { "load",  "save", "restart", "quit" }; 
- *                    ^F4/C-l  ^F5/C-s    C-r      C-x
+ *                    ^F4/C-l  ^F5/C-s    ^F8/C-r    C-x
  */
 
 
@@ -68,8 +70,8 @@ static const char *verbs[] = { "ask", "give", "run", "fly", "put", "eat", "drink
 /* Gets the lexeme */
 lexeme_t lexeme_type(const char *word)
 {
-    if (!word || str_is_empty(word)) {
-        return LEX_EMPTY;
+    if (!word) {
+        return LEX_END;
     }
 
     /* Here the priority is set indirectly by the order how these
@@ -100,7 +102,9 @@ lexeme_t lexeme_type(const char *word)
      *      ---- ---------- ---------
      *      Act.   D.O.       I.O.
      */
-    if (str_in_array(word, verbs, arr_len_bytes(verbs))) {
+    if (str_is_empty(word)) {
+        return LEX_EMPTY;
+    } else if (str_in_array(word, verbs, arr_len_bytes(verbs))) {
         return LEX_VERB;
     } else if (str_in_array(word, adverbs, arr_len_bytes(adverbs))) {
         return LEX_ADVERB;
@@ -120,7 +124,7 @@ lexeme_t lexeme_type(const char *word)
         return LEX_CONJ;
     }
 
-    return LEX_END;
+    return LEX_UNK;
 }
 
 
@@ -133,6 +137,7 @@ int parse_cmd(cmd_t *cmd)
 
     /* Command processing */
 /**/
+#ifdef DEBUG
     printf("Action?....... %s\n", cmd_action);
     printf("Mode?......... %s\n", cmd_mode);
     printf("Quantity?..... %s\n", cmd_quantity);
@@ -140,6 +145,7 @@ int parse_cmd(cmd_t *cmd)
     printf("D.Object?..... %s\n", cmd_dobj);
     printf("I.Object?..... %s\n", cmd_iobj);
     puts("");
+#endif
 /**/
 
     return 0;
@@ -152,6 +158,7 @@ int parse_simple(char *sentence)
     lexeme_t token_type;
     char *token;
     cmd_t *cmd;
+    bool valid = true;
 
     if (!(cmd = cmd_init_empty())) {
         return 1;
@@ -165,11 +172,11 @@ int parse_simple(char *sentence)
 
         switch (token_type) {
             case LEX_VERB:
-                str_cpy(cmd_action, token);
+                str_cpy_alloc(&cmd_action, token);
                 break;
 
             case LEX_ADVERB:
-                str_cpy(cmd_mode, token);
+                str_cpy_alloc(&cmd_mode, token);
                 break;
 
             case LEX_PREP:
@@ -179,37 +186,49 @@ int parse_simple(char *sentence)
                 break;
 
             case LEX_NUM:
-                str_cpy(cmd_quantity, token);
+                str_cpy_alloc(&cmd_quantity, token);
                 break;
 
             case LEX_ADJ:
-                str_cpy(cmd_quality, token);
+                str_cpy_alloc(&cmd_quality, token);
                 break;
 
             case LEX_NOUN:
-                str_cpy(cmd_dobj, token);
+                str_cpy_alloc(&cmd_dobj, token);
                 break;
 
             case LEX_PRONOUN:
-                str_cpy(cmd_iobj, token);
+                str_cpy_alloc(&cmd_iobj, token);
                 break;
 
             case LEX_CONJ:
                 break;
 
             case LEX_UNK:
+#ifdef DEBUG
+                printf("I don't understand '%s'.\n", token);
+#endif
+                valid = false;
+                break;
+
             case LEX_EMPTY:
+#ifdef DEBUG
+                puts("EMPTY SENTENCE");
+#endif
+                valid = false;
                 break;
 
             case LEX_END:   /* This point is reached on error */
             default:
+                valid = false;
                 cmd_destroy(cmd);
-//                puts("END");
                 return 2;
         }
     }
 
-    parse_cmd(cmd);
+    if (valid) {
+        parse_cmd(cmd);
+    }
     cmd_destroy(cmd);
 
     return 0;
@@ -227,10 +246,11 @@ int parse_compound(char *sentence)
     char *prev;
     char *next;
     int ret_val = 0;
-    int it=0;
+    int it = 0; /* iterations := (# of commands in sentence) - 1 */
 
     if (!sentence || str_is_empty(sentence)) {
-        return -1;
+        ret_val = -1;
+        parse_simple(sentence);
     }
 
     /* Iterate over all subsentences */

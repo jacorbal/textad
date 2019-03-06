@@ -1,6 +1,4 @@
 /* Command and parsing test */
-#include <assert.h>
-
 #ifdef DEBUG
     #include <mcheck.h>
     #include <malloc.h>
@@ -25,6 +23,7 @@ int main(void)
     mtrace();
 #endif
 
+    puts(" Type 'quit' to exit");
     do {
         get_line(CMD_PROMPT, cmd, CMD_MAX_LEN);
         parse(cmd);

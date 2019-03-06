@@ -20,7 +20,12 @@
 #ifndef CMD_H
 #define CMD_H
 
-#include <stddef.h> /* NULL */
+/* System includes */
+#include <stdbool.h>    /* bool */
+#include <stddef.h>     /* NULL */
+
+/* Local includes */
+#include <strops.h>
 
 
 /**
@@ -30,12 +35,12 @@
  *
  * All sentences are imperative in the form:
  *
- *    <action> [<mode>] [<quality>] [<quantity>] [<d. object>] [<i. object>]
- *    -------- -------- ----------- ------------ ------------- -------------
+ *    <action> [<mode>] [<quality>] [<quantity>] [<dir.obj>] [<ind.obj>]
+ *    -------- -------- ----------- ------------ ----------- -----------
  *       |        |         |            |            |              |
  *     VERB    ADVERB    ADJECTIVE    NUMBER     COMMON NOUN  PRONOUN or
- *      |                                                     PROPER NOUN
- *      |
+ *       |                                                    PROPER NOUN
+ *       |
  *    Mandatory
  *
  * Examples:
@@ -94,6 +99,18 @@ cmd_t *cmd_init(const char *action, const char *mode,
  * @param cmd Command to deallocate from memory
  */
 void cmd_destroy(cmd_t *cmd);
+
+/**
+ * @brief Macro that evaluates to the command emptyness (or null-ness)
+ *
+ * @see str_is_empty_or_null
+ */
+#define cmd_is_empty(cmd)  (str_is_empty_or_null(cmd->action) && \
+                            str_is_empty_or_null(cmd->mode) && \
+                            str_is_empty_or_null(cmd->quantity) && \
+                            str_is_empty_or_null(cmd->quality) && \
+                            str_is_empty_or_null(cmd->dobj) && \
+                            str_is_empty_or_null(cmd->iobj))
 
 /**
  * @brief Macro that evaluates to the creation of an empty command

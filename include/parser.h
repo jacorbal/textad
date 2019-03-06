@@ -103,7 +103,7 @@ int parse_simple(char *sentence);
  * @param sentence Compound sentence to parse
  *
  * @return Returns 0 if parses all sentences successfully,
- *                -1 if the sentence is empty or @c NULL, or otherwise
+ *                -1 if the sentence is empty, or otherwise
  *
  * @todo Refactor: too many calls to `str_trim`, too many iterations and
  *                 too many pointers that may be unneeded

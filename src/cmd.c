@@ -18,7 +18,8 @@
  */
 
 /* System includes */
-#include <stdlib.h>
+#include <stdbool.h>    /* bool */
+#include <stdlib.h>     /* malloc, free */
 
 /* Local includes */
 #include <cmd.h>

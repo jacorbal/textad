@@ -156,6 +156,16 @@ char *str_cpy_alloc(char **dst, const char *src);
 #define str_is_empty(s)  (strlen(s) == 0)
 
 /**
+ * @brief Macro that evaluates to the null-ness of a string
+ */
+#define str_is_null(s)  (s == NULL)
+
+/**
+ * @brief Macro that evaluates to the NULL-ness or emptiness of a string
+ */
+#define str_is_empty_or_null(s)  (str_is_null(s) || str_is_empty(s))
+
+/**
  * @brief Macro that evaluates to the allocation of as much memory of
  *        another string, or it evaluates it to @c NULL
  */
