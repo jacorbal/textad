@@ -38,10 +38,9 @@ lingo_t *lingo_init(const char *kname, const char *uname,
         return NULL;
     }
 
-    str_cpy_alloc(&lingo->uname, uname);
-    str_cpy_alloc(&lingo->kname, kname);
-    str_cpy_alloc(&lingo->desc, desc);
-
+    lingo->uname = str_alloc_cpy(uname);
+    lingo->kname = str_alloc_cpy(kname);
+    lingo->desc = str_alloc_cpy(desc);
     lingo->nouns = wset_init();
     lingo->adjs = wset_init();
     lingo->pronouns = wset_init();

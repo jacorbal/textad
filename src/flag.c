@@ -36,8 +36,8 @@ flag_t *flag_init(const bool state, const char *yes, const char* no)
     }
 
     flag->state = state;
-    str_cpy_alloc(&flag->yes, yes);
-    str_cpy_alloc(&flag->no, no);
+    flag->yes = str_alloc_cpy(yes);
+    flag->no = str_alloc_cpy(no);
 
     return flag;
 }

@@ -98,7 +98,7 @@ bool qltys_add(qltys_t *qltys, flag_t *flag)
     }
 
     qltys->flags = realloc(qltys->flags,
-            sizeof(flag_t *) * (qltys->len + 1));
+                           sizeof(flag_t *) * (qltys->len + 1));
     if (!qltys->flags) {
         return false;
     }

@@ -45,8 +45,12 @@ void str_trim(char *s)
     char *p = s;
     int l = strlen(p);
 
-    while (isspace(p[l - 1])) { p[--l] = 0; }
-    while (*p && isspace(*p)) { ++p, --l; }
+    while (isspace(p[l - 1])) {
+        p[--l] = 0;
+    }
+    while (*p && isspace(*p)) {
+        ++p, --l;
+    }
 
     memmove(s, p, l + 1);
 }
@@ -117,10 +121,12 @@ char *str_ncpy(char *dst, const char *src, size_t len)
 
 
 /* Copies one string after allocating memory for source pointer */
-char *str_cpy_alloc(char **dst, const char *src)
+char *str_alloc_cpy(const char *src)
 {
-    if (src && (*dst = malloc(sizeof(char) * (strlen(src) + 1)))) {
-        return str_ncpy(*dst, src, strlen(src) + 1);
+    char *dst;
+
+    if (src && (dst = malloc(sizeof(char) * (strlen(src) + 1)))) {
+        return str_ncpy(dst, src, strlen(src) + 1);
     }
 
     return NULL;

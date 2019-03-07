@@ -98,7 +98,6 @@ char *str_ncpy(char *dest, const char *src, size_t len);
  *        length of the source string, and then copies the source string
  *        into the destination
  *
- * @param dst Pointer to the destination string
  * @param src Source string
  *
  * @return Pointer to the destination string, or @c NULL if failure on
@@ -106,7 +105,7 @@ char *str_ncpy(char *dest, const char *src, size_t len);
  *
  * @see str_ncpy
  */
-char *str_cpy_alloc(char **dst, const char *src);
+char *str_alloc_cpy(const char *src);
 
 /**
  * @brief Macro that evaluates to @e str_transform using @e tolower

@@ -105,25 +105,13 @@ int parse_simple(char *sentence);
  * @return Returns 0 if parses all sentences successfully,
  *                -1 if the sentence is empty, or otherwise
  *
- * @todo Refactor: too many calls to `str_trim`, too many iterations and
- *                 too many pointers that may be unneeded
+ * @todo Refactor: too many calls to @e str_trim, too many iterations
+ *                 and too many pointers that may be unneeded
  */
 int parse_compound(char *sentence);
 
 /**
- * @brief Macro that evaluates to the size in bits of an array of strings,
- *         (@c char*)
- */
-#define arr_len_bits(arr)  (sizeof(arr) / (sizeof(arr[0][0])))
-
-/**
- * @brief Macro that evaluates to the size in bytes of an array of strings,
- *         (@c char*)
- */
-#define arr_len_bytes(arr) (arr_len_bits(arr) / 8)
-
-/**
- * @brief An alias for `parse_compound`
+ * @brief An alias for @e parse_compound
  */
 #define parse(s) parse_compound(s)
 

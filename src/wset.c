@@ -34,7 +34,7 @@ wset_t *wset_init(void)
     if (!(wset = malloc(sizeof(wset_t)))) {
         return NULL;
     }
-    if (!(wset->words = malloc(sizeof(char **)))) {
+    if (!(wset->words = malloc(sizeof(char *)))) {
         return NULL;
     }
 
@@ -68,8 +68,7 @@ bool wset_has_word(wset_t *wset, const char *word)
 /* Adds a new word to the set of words */
 bool wset_add(wset_t *wset, const char *word)
 {
-    if (!word || str_is_empty(word) || !wset ||
-            wset_has_word(wset, word)) {
+    if (!word || str_is_empty(word) || !wset || wset_has_word(wset, word)) {
         return false;
     }
 

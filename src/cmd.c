@@ -37,12 +37,12 @@ cmd_t *cmd_init(const char *action, const char *mode,
         return NULL;
     }
 
-    str_cpy_alloc(&cmd->action, action);
-    str_cpy_alloc(&cmd->mode, mode);
-    str_cpy_alloc(&cmd->quantity, quantity);
-    str_cpy_alloc(&cmd->quality, quality);
-    str_cpy_alloc(&cmd->dobj, dobj);
-    str_cpy_alloc(&cmd->iobj, iobj);
+    cmd->action = str_alloc_cpy(action);
+    cmd->mode = str_alloc_cpy(mode);
+    cmd->quantity = str_alloc_cpy(quantity);
+    cmd->quality = str_alloc_cpy(quality);
+    cmd->dobj = str_alloc_cpy(dobj);
+    cmd->iobj = str_alloc_cpy(iobj);
 
     return cmd;
 }

@@ -37,6 +37,7 @@
 #endif
 
 /* Local includes */
+#include <array.h>
 #include <cmd.h>
 #include <strops.h>
 #include <parser.h>
@@ -44,18 +45,35 @@
 
 /* Arrays of valid words separated by lexeme type.
  * TODO: later, taken from data files or databases */
-static const char *adverbs[] = { "gently", "softly", "viciously", };
-static const char *adjectives[] = { "red", "blue", "green", "yellow", "white", "black", "silver", };
-static const char *numbers[] = { "one", "two", "three", "four", "five", "1", "2", "3", };
-static const char *articles[] = { "a", "an", "the", };
-static const char *conjunctions[] = { "and", "then", };
-static const char *nouns[] = { "dog", "cat", "birds", "mouse", "potion", "key", "lock", };
-static const char *pronouns[] = { "him", "her", "his", "its", "self", };
-static const char *prepositions[] = { "about", "to", "for", "at", "in", "on", "of", "with", "from", };
-static const char *verbs[] = { "ask", "give", "run", "fly", "put", "eat", "drink", "catch", "take", "drop", "open", };
-//static const char *answers[] = { "fine", "good", "bad", "yes", "no", "okay", };
-//static const char *directions[] = { "north", "east", "south", "west", "northeast", "nortwest", "southeast", "southwest", "up", "down", };
-//static const char *commands[] = { "inventory", "help", "restart", "load", "save", "quit", };
+static const char *adverbs[] =
+    { "gently", "softly", "viciously", };
+static const char *adjectives[] =
+    { "red", "blue", "green", "yellow", "white", "black", "silver", };
+static const char *numbers[] =
+    { "one", "two", "three", "four", "five", "1", "2", "3", };
+static const char *articles[] =
+    { "a", "an", "the", };
+static const char *conjunctions[] =
+    { "and", "then", };
+static const char *nouns[] =
+    { "dog", "cat", "birds", "mouse", "potion", "key", "lock", };
+static const char *pronouns[] =
+    { "him", "her", "his", "its", "self", };
+static const char *prepositions[] =
+    { "about", "to", "for", "at", "in", "on", "of", "with", "from", };
+static const char *verbs[] =
+    { "ask", "give", "run", "fly", "put", "eat", "drink", "catch",
+      "take", "drop", "open", };
+
+/*
+static const char *answers[] =
+    { "fine", "good", "bad", "yes", "no", "okay", };
+static const char *directions[] =
+    { "north", "east", "south", "west", "northeast", "nortwest",
+    "southeast", "southwest", "up", "down", };
+static const char *commands[] =
+    { "inventory", "help", "restart", "load", "save", "quit", };
+*/
 /* Also add:
  *      *expelatives[]  = { "...", };
  *      *exclamations[] = {"hello", "bye", "oh", "damn", }
@@ -64,7 +82,6 @@ static const char *verbs[] = { "ask", "give", "run", "fly", "put", "eat", "drink
  *      *commands[] = { "load",  "save", "restart", "quit" }; 
  *                    ^F4/C-l  ^F5/C-s    ^F8/C-r    C-x
  */
-
 
 
 /* Gets the lexeme */
@@ -104,23 +121,25 @@ lexeme_t lexeme_type(const char *word)
      */
     if (str_is_empty(word)) {
         return LEX_EMPTY;
-    } else if (str_in_array(word, verbs, arr_len_bytes(verbs))) {
+    } else if (str_in_array(word, verbs, darr_len_str(verbs))) {
         return LEX_VERB;
-    } else if (str_in_array(word, adverbs, arr_len_bytes(adverbs))) {
+    } else if (str_in_array(word, adverbs, darr_len_str(adverbs))) {
         return LEX_ADVERB;
-    } else if (str_in_array(word, articles, arr_len_bytes(articles))) {
+    } else if (str_in_array(word, articles, darr_len_str(articles))) {
         return LEX_ART;
-    } else if (str_in_array(word, adjectives, arr_len_bytes(adjectives))) {
+    } else if (str_in_array(word, adjectives, darr_len_str(adjectives))) {
         return LEX_ADJ;
-    } else if (str_in_array(word, numbers, arr_len_bytes(numbers))) {
+    } else if (str_in_array(word, numbers, darr_len_str(numbers))) {
         return LEX_NUM;
-    } else if (str_in_array(word, nouns, arr_len_bytes(nouns))) {
+    } else if (str_in_array(word, nouns, darr_len_str(nouns))) {
         return LEX_NOUN;
-    } else if (str_in_array(word, prepositions, arr_len_bytes(prepositions))) {
+    } else
+        if (str_in_array(word, prepositions, darr_len_str(prepositions))) {
         return LEX_PREP;
-    } else if (str_in_array(word, pronouns, arr_len_bytes(pronouns))) {
+    } else if (str_in_array(word, pronouns, darr_len_str(pronouns))) {
         return LEX_PRONOUN;
-    } else if (str_in_array(word, conjunctions, arr_len_bytes(conjunctions))) {
+    } else
+        if (str_in_array(word, conjunctions, darr_len_str(conjunctions))) {
         return LEX_CONJ;
     }
 
@@ -172,11 +191,11 @@ int parse_simple(char *sentence)
 
         switch (token_type) {
             case LEX_VERB:
-                str_cpy_alloc(&cmd_action, token);
+                cmd_action = str_alloc_cpy(token);
                 break;
 
             case LEX_ADVERB:
-                str_cpy_alloc(&cmd_mode, token);
+                cmd_mode = str_alloc_cpy(token);
                 break;
 
             case LEX_PREP:
@@ -186,19 +205,19 @@ int parse_simple(char *sentence)
                 break;
 
             case LEX_NUM:
-                str_cpy_alloc(&cmd_quantity, token);
+                cmd_quantity = str_alloc_cpy(token);
                 break;
 
             case LEX_ADJ:
-                str_cpy_alloc(&cmd_quality, token);
+                cmd_quality = str_alloc_cpy(token);
                 break;
 
             case LEX_NOUN:
-                str_cpy_alloc(&cmd_dobj, token);
+                cmd_dobj = str_alloc_cpy(token);
                 break;
 
             case LEX_PRONOUN:
-                str_cpy_alloc(&cmd_iobj, token);
+                cmd_iobj = str_alloc_cpy(token);
                 break;
 
             case LEX_CONJ:

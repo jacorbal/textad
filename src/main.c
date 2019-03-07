@@ -1,5 +1,6 @@
 /* Command and parsing test */
 #ifdef DEBUG
+    #include <stdio.h>
     #include <mcheck.h>
     #include <malloc.h>
 #endif
@@ -19,11 +20,11 @@ int main(void)
 
 #ifdef DEBUG
     puts(" *** DEBUG MODE ON ***");
+    puts(" Type 'quit' to exit");
     mallopt(M_CHECK_ACTION, 2);
     mtrace();
 #endif
 
-    puts(" Type 'quit' to exit");
     do {
         get_line(CMD_PROMPT, cmd, CMD_MAX_LEN);
         parse(cmd);

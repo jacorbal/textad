@@ -56,13 +56,13 @@ ${O_DIR}/%.o: ${S_DIR}/%.c
 .PHONY: clean clean-obj clean-all run hard help
 
 all:
-	make ${TARGET}
+	@make ${TARGET}
 
 clean-obj:
-	rm --force ${OBJS}
+	@rm --force ${OBJS}
 
 clean-bin:
-	rm --force ${TARGET}
+	@rm --force ${TARGET}
 
 clean:
 	@make clean-obj
@@ -75,7 +75,7 @@ debug:
 	@make hard DEBUG=1
 
 run:
-	${TARGET} ${RUN_ARGS}
+	@${TARGET} ${RUN_ARGS}
 
 hard:
 	@make clean
@@ -88,6 +88,13 @@ hard-run:
 
 run-hard:
 	@make hard-run
+
+run-debug:
+	@make hard DEBUG=1
+	MALLOC_TRACE="./_debug_/mchecktr.dbg" make run
+
+debug-run:
+	@make run-debug
 
 help:
 	@echo "Type:"
