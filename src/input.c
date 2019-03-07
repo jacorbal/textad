@@ -2,16 +2,18 @@
  * @file input.c
  */
 
-#include <stdio.h>  /* fflush, fprint, fgets, getchar */
-#include <string.h> /* strlen */
+#include <stdbool.h>    /* bool, true, false */
+#include <stdio.h>      /* fflush, fprintf, fgets */
+#include <string.h>     /* strlen */
 
 
 /* Gets a line from 'stdin' */
 int get_line(char *prmpt, char *buf, size_t size)
 {
-    int ch, extra;
+    int ch;
+    bool extra; /* Are there extra characters after the stipulated size? */
 
-    /* Get line with bufer overrun protection */
+    /* Get line */
     if (prmpt) {
         fprintf(stdout, "%s", prmpt);
         fflush(stdout);
@@ -26,11 +28,11 @@ int get_line(char *prmpt, char *buf, size_t size)
     /* If it was too long, there'll be no newline.  In that case, we
      * flush to end of line so that excess doesn't affect the next call */
     if (buf[strlen(buf) - 1] != '\n') {
-        extra = 0;
+        extra = false;
         while (((ch = getc(stdin)) != '\n') && (ch != EOF)) {
-            extra = 1;
+            extra = true;
         }
-        return (extra == 1) ? 2 /* too long */ : 0 /* okay */;
+        return (extra) ? 2 /* too long */ : 0 /* okay */;
     }
 
     /* Otherwise remove newline and give string back to caller */
