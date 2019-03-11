@@ -101,12 +101,12 @@ bool flag_cmp(const flag_t *f1, const flag_t *f2, bool statecmp);
 /** @brief Macro that evaluates to @flag_init without status strings and
  *         the status set to @c true
  */
-#define flag_init_qt(f)  flag_init_q(true)
+#define flag_init_qt(f)  flag_init(true, NULL, NULL)
 
 /** @brief Macro that evaluates to @flag_init without status strings and
  *         the status set to @c false
  */
-#define flag_init_qf(f)  flag_init_q(false)
+#define flag_init_qf(f)  flag_init(false, NULL, NULL)
 
 
 #endif /* FLAG_H */

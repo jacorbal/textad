@@ -145,9 +145,11 @@ char *str_alloc_cpy(const char *src);
  * @see strncmp
  *
  * @note There are no length comparisons.  For safety reasons, @e strncmp
- *       is used, but always it's used the length of the first string.
+ *       is used, but always it's used the length of the second string.
+ *
+ * @note It's intended to be used as @e streq(char *, "literal")
  */
-#define streq(s1, s2)  (strncmp(s1, s2, strlen(s1)) == 0)
+#define streq(s1, s2)  (strncmp(s1, s2, strlen(s2)) == 0)
 
 /**
  * @brief Macro that evaluates to the length of the string

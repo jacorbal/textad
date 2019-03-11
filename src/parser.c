@@ -231,9 +231,6 @@ int parse_simple(char *sentence)
                 break;
 
             case LEX_EMPTY:
-#ifdef DEBUG
-                puts("EMPTY SENTENCE");
-#endif
                 valid = false;
                 break;
 
