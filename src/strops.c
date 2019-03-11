@@ -56,7 +56,7 @@ void str_trim(char *s)
 }
 
 
-/* Transform the string to lowercase */
+/* Transform the string to lowercase or uppercase */
 void str_transform_case(char *s, int (*f)(int))
 {
     for (; *s; ++s) {

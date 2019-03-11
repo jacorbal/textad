@@ -53,9 +53,9 @@ bool str_in_array(const char *s, const char **arr, size_t arr_len);
 void str_trim(char *s);
 
 /**
- * @brief Convert the string to lowercase
+ * @brief Convert the string to lowercase or uppercase
  *
- * @param s String to make lowercase
+ * @param s String to make lowercase or uppercase
  * @param f Function to transform with signature `int f(int)`
  *
  * @note Recommended functions are @e tolower and @e toupper, or similar
