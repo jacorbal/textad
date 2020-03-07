@@ -7,7 +7,7 @@ Text adventure is a interactive fiction minimal engine.
 Copyright
 ---------
 
-Copyright (c) 2019, J. A. Corbal
+Copyright (c) 2019-2020, J. A. Corbal
 
 
 Contact information
