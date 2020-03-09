@@ -1,20 +1,44 @@
 Text Adventure
 ==============
 
-Text adventure is a interactive fiction minimal engine.
+Text adventure is a interactive fiction minimal engine in C, still in development.
 
 
-Copyright
+Intention
 ---------
 
-Copyright (c) 2019-2020, J. A. Corbal
+    All sentences are imperative in the form:
 
+       <action> [<mode>] [<quality>] [<quantity>] [<dir.obj>] [<ind.obj>]
+       -------- -------- ----------- ------------ ----------- -----------
+          |        |         |            |            |              |
+        VERB    ADVERB    ADJECTIVE    NUMBER     COMMON NOUN  PRONOUN or
+          |                                                    PROPER NOUN
+          |
+       Mandatory
 
-Contact information
--------------------
+    Examples:
+      * INVENTORY (verb -> special)
+      * GET KEY (verb + noun)
+      * GIVE KEY TO HIM (verb + noun + "to" + iobj)
+      * ASK HER ABOUT MAGIC (verb + pronoun + "about" + dobj)
+      * LOOK IN RED CLOSET (verb + "in" + adj + dobj)
+      * TAKE SWORD AND KILL MONSTER FEROCEOSLY
+             (verb + dobj) + "AND" + (verb + dobj + adv)
+      * ASK HIM SOFTLY ABOUT THE THREE RED BIRDS
+             (verb + iobj + adv + "about" + "the" + num + adj + noun)
 
-  * Website: <http://jacorbal.es>
-  * E-mail address: <jacorbal@gmail.com>
+    The <action> (verb) is always required.  It can be a tipical action,
+    but also an special command (such as "inventory"), an answer ("yes",
+    "no", "maybe"), a direction ("north", "east"), &c.
+
+    When a special action is invoked, everything else is ignored:
+      * LOAD QUICKLY (load + <ignored>)
+      * SAVE GENTLY (save + <ignored>)
+      * INVENTORY NOW (inventory + <ignored>)
+
+    Prepositions, articles and conjunctions are ignored, except 'and' to
+    couple several actions into one, eg, "LOOK ROOM AND TAKE KEY".
 
 
 License
@@ -42,3 +66,8 @@ In short words:
     - The copyright notice in all copies or substantial uses of the work
     - The license notice in all copies or substantial uses of the work
 
+
+Copyright
+---------
+
+Copyright (c) 2019-2020, J. A. Corbal
